@@ -1,0 +1,16 @@
+rm(list=ls())
+setwd("D:/Data Science/coursera/Course 4 - Exploratory Data Analysis/week 1/")
+df <- read.table("household_power_consumption.txt", comment.char = "#", header = FALSE, sep = ";")
+cnames <- readLines("household_power_consumption.txt",1)
+cnames <- strsplit(cnames, ";", fixed = TRUE)
+cnames
+names(df) <- make.names(cnames [[1]])
+df = df[-1,]
+df$Date <- as.Date(df$Date, "%d/%m/%Y")
+df <- subset(df, Date >= "2007-02-01")
+df <- subset(df, Date <= "2007-02-02")
+df$Global_active_power <- as.numeric(as.character(df$Global_active_power))
+df$datetime <- as.POSIXct(paste(df$Date, df$Time), format="%Y-%m-%d %H:%M:%S")
+plot(type = "l", df$datetime, df$Global_active_power, xlab = "", ylab = "Global Active Power (kilowatts)", main = "Global Active Power (kilowatts)")
+dev.copy(png,'plot2.png')
+dev.off()
